@@ -1,26 +1,36 @@
-
+import scala.util.{Failure, Success, Try}
 
 object main {
   def main(args: Array[String]): Unit = {
 
-    val listOrders = new doOrders().makeOrders()
+    val result: Try[Unit] = for {
+      dateIni <- Try(args(0))
+      dateEnd <- Try(args(1))
+    } yield {
+      val intervalList = Try(args(2)).toOption
 
-    var list = new showOrdersInterval(args(0), args(1))
-
-    var intervalList: String = new String()
-    try {
-      intervalList = args(2)
-    } catch {
-      case _: Exception =>
-    } finally {
-
+      intervalList match {
+        case None =>
+          println(
+            new showIntervals(dateIni, dateEnd).getIntervals(
+              new showOrdersInterval(dateIni, dateEnd)
+                .getOrders(new doOrders().makeOrders())
+            )
+          )
+        case Some(intervalList) =>
+          println(
+            new showIntervals(dateIni, dateEnd)
+              .getOrdersBySpecInterval(
+                new doOrders().makeOrders(),
+                intervalList
+              )
+          )
+      }
     }
 
-    if (intervalList.isEmpty) {
-      intervalList = null
-      println(new showIntervals(args(0), args(1)).getIntervals(list.getOrders(listOrders)))
-    } else {
-      println(new showIntervals(args(0), args(1)).getOrdersBySpecInterval(listOrders,intervalList))
+    result match {
+      case Failure(exception) => println(s"Error: ${exception.getMessage}")
+      case Success(value) => println(value)
     }
   }
 }

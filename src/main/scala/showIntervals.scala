@@ -7,27 +7,26 @@ import java.util.regex.Pattern
 import scala.collection.mutable.ArrayBuffer
 
 class showIntervals(private var dateIni: String, private var dateEnd: String) {
+  var dateI = new Date()
+  var dateE = new Date()
+  val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
+  val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
+  format.format(new java.util.Date())
+  dateI = format.parse(dateIni)
+  dateE = format.parse(dateEnd)
+  if (dateI.compareTo(dateE) > 0) {
+    val dateAux = dateIni
+    dateIni = dateEnd
+    dateEnd = dateAux
+  }
 
   def getIntervals(listOrders: ArrayBuffer[Order]): String = {
-
-    var dateI = new Date()
-    var dateE = new Date()
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
-    format.format(new java.util.Date())
-    dateI = format.parse(dateIni)
-    dateE = format.parse(dateEnd)
-    if (dateI.compareTo(dateE) > 0) {
-      val dateAux = dateIni
-      dateIni = dateEnd
-      dateEnd = dateAux
-    }
 
     dateIni = dateIni.split(" ")(0)
     dateEnd = dateEnd.split(" ")(0)
 
     var m1_3, m4_6, m7_12, m12: Int = 0
     listOrders.foreach(order => {
-      val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
       val itemDate = dateFormat.format(order.getDate())
 
       val space = ChronoUnit.MONTHS.between(LocalDate.parse(dateIni).withDayOfMonth(1), LocalDate.parse(itemDate).withDayOfMonth(1)) + 1
@@ -57,24 +56,12 @@ class showIntervals(private var dateIni: String, private var dateEnd: String) {
       m.find
     }) intervals.add(m.group.toInt)
 
-    var dateI = new Date()
-    var dateE = new Date()
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
-    format.format(new java.util.Date())
-    dateI = format.parse(dateIni)
-    dateE = format.parse(dateEnd)
-    if (dateI.compareTo(dateE) > 0) {
-      val dateAux = dateIni
-      dateIni = dateEnd
-      dateEnd = dateAux
-    }
-
     dateIni = dateIni.split(" ")(0)
     dateEnd = dateEnd.split(" ")(0)
 
     var str: String = new String()
 
-    for (w <- 0 until intervals.size()){
+    for (w <- 0 until intervals.size()) {
       if (w % 2 == 0) {
         var counter: Int = 0
         if (w + 1 != intervals.size) {
@@ -83,7 +70,7 @@ class showIntervals(private var dateIni: String, private var dateEnd: String) {
             val itemDate = dateFormat.format(order.getDate())
 
             val space = ChronoUnit.MONTHS.between(LocalDate.parse(dateIni).withDayOfMonth(1), LocalDate.parse(itemDate).withDayOfMonth(1)) + 1
-            if (space >= intervals.get(w) && space <= intervals.get(w+1)) {
+            if (space >= intervals.get(w) && space <= intervals.get(w + 1)) {
               counter += 1
             }
           })
@@ -97,8 +84,6 @@ class showIntervals(private var dateIni: String, private var dateEnd: String) {
         }
       }
     }
-
     str
   }
-
 }

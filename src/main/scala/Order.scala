@@ -1,10 +1,10 @@
 import java.util.Date
 
-class Order(private var customerName: String,
-            private var contact: Int,
-            private var shippingAddress: String,
-            private var date: String,
-            private var items: List[Item]) {
+class Order(private val customerName: String,
+            private val contact: Int,
+            private val shippingAddress: String,
+            private val date: String,
+            private val items: List[Item]) {
 
   //Items/Order dates validation
   val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

@@ -1,12 +1,21 @@
 import java.text.SimpleDateFormat
+import scala.util.Try
 
 
-class Product(private var name: String,
-              private var category: String,
-              private var weight: Float,
-              private var price: Float,
-              private var creationDate: String) {
+class Product(private val name: String,
+              private val category: String,
+              private val weight: Float,
+              private val price: Float,
+              private val creationDate: String) {
 
+  /*  val result: Try[Unit] = for {
+      df : SimpleDateFormat <- Try(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+      try(df.setLenient(false))
+    } yield {
+
+    }*/
+
+  //
   try {
     val df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     df.setLenient(false)
@@ -14,6 +23,7 @@ class Product(private var name: String,
   } catch {
     case _: Exception => throw new Exception("\n\nInvalid Date '" + creationDate + "' for product '" + name)
   }
+  //
 
   if (name.isEmpty || name.isBlank || category.isBlank || category.isBlank || weight <= 0 || price <= 0) {
     throw new ArithmeticException("\nWrong  fields input for product '" + name + "'")
@@ -35,7 +45,7 @@ class Product(private var name: String,
 
   def equals(obj: Product): Boolean = {
     if (this.name.equals(obj.name) && this.category.equals(obj.category) && this.weight.equals(obj.weight) && this.creationDate.equals(obj.creationDate) && this.price.equals(obj.price)) {
-      true
+      return true
     }
     false
   }

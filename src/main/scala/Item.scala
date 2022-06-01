@@ -1,9 +1,9 @@
 import java.util.Date
 
 class Item(
-            private var shippingFee: Float,
-            private var taxAmount: Float,
-            private var product: Product) {
+            private val shippingFee: Float,
+            private val taxAmount: Float,
+            private val product: Product) {
 
   private val cost: Float = BigDecimal(product.getPrice() + (product.getPrice() * (taxAmount / 100)) + shippingFee).setScale(2, BigDecimal.RoundingMode.HALF_UP).toFloat
 
