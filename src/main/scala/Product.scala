@@ -15,6 +15,7 @@ class Product(private val name: String,
 
     }*/
 
+
   //
   try {
     val df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -23,7 +24,6 @@ class Product(private val name: String,
   } catch {
     case _: Exception => throw new Exception("\n\nInvalid Date '" + creationDate + "' for product '" + name)
   }
-  //
 
   if (name.isEmpty || name.isBlank || category.isBlank || category.isBlank || weight <= 0 || price <= 0) {
     throw new ArithmeticException("\nWrong  fields input for product '" + name + "'")

@@ -13,13 +13,12 @@ class Order(private val customerName: String,
 
   items.foreach(item => {
     if (dateOrder.compareTo(item.getDate()) < 0) {
-      throw new ArithmeticException("\n\nItem creation date must be before order date\n\n" + "Error with order: " + customerName + "\tDate: " + date  + item.getProduct() + "\n")
+      throw new ArithmeticException("\n\nItem creation date must be before order date\n\n" + "Error with order: " + customerName + "\tDate: " + date + item.getProduct() + "\n")
     }
   })
 
-  var total: Float = 0
-  items.foreach(total += _.getCost())
-  total = BigDecimal(total).setScale(2, BigDecimal.RoundingMode.HALF_UP).toFloat
+
+  val total: Float = items.map(_.getCost()).sum
 
   def getDate(): Date = {
     val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

@@ -2,7 +2,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class doOrders() {
 
-  def makeOrders(): ArrayBuffer[Order] = {
+  def makeOrders(): Seq[Order] = {
 
     val product: Product = new Product("Rtx 3050", "PC", 0.5f, 599.99f, "2021-01-01 00:00:01")
     val item: Item = new Item(12.2f, 5.5f, product)
@@ -29,6 +29,6 @@ class doOrders() {
     val order11 = new Order("Lucas", 123456789, "blabla - porto - 4000", "2022-08-01 00:00:00", List(item3, item))
     val order12 = new Order("Theodore", 123456789, "blabla - porto - 4000", "2023-07-01 00:00:00", List(item4))
 
-    ArrayBuffer(order1, order2, order3, order4, order5, order6, order7, order8, order9, order10, order11, order12)
+    Seq(order1, order2, order3, order4, order5, order6, order7, order8, order9, order10, order11, order12)
   }
 }
