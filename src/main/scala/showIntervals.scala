@@ -8,6 +8,7 @@ class showIntervals(private val dateIniArg: String) {
   val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
   format.format(new java.util.Date())
+
   sealed trait MonthsSinceNow
 
 
@@ -28,7 +29,7 @@ class showIntervals(private val dateIniArg: String) {
         (ChronoUnit.MONTHS.between(LocalDate.parse(dateIni).withDayOfMonth(1), LocalDate.parse(itemDate).withDayOfMonth(1)) + 1).toInt
       }
 
-      def apply(dataInicio: String, order: Order): MonthsSinceNow = {
+      def apply(order: Order): MonthsSinceNow = {
         val delta = totalMonths(order)
         delta match {
           case delta if delta < 1 => LessThanOneMonth
@@ -43,27 +44,24 @@ class showIntervals(private val dateIniArg: String) {
     val orders: Seq[Order] = listOrders
 
     val a: Seq[MonthsSinceNow] = orders.map(order =>
-      MonthsSinceNow.apply(dateIni, order)
+      MonthsSinceNow.apply(order)
     )
 
     val b: Map[MonthsSinceNow, Seq[MonthsSinceNow]] = a.groupBy(identity)
 
     val c: Map[MonthsSinceNow, Int] = b.map { case (monthsSinceNow, orders) => (monthsSinceNow, orders.size) }
 
-    var str: String = new String()
 
-    c.foreach(obj => {
+    c.map(obj => {
       obj._1 match {
-        case LessThanOneMonth => (str += "<1: " + obj._2 + "\n")
-        case OneToThreeMonths => (str += "1-3: " + obj._2 + "\n")
-        case FourToSixMonths => (str += "4-6: " + obj._2 + "\n")
-        case SevenToTwelveMonths => (str += "7-12: " + obj._2 + "\n")
-        case MoreThanTwelveMonths => (str += ">12: " + obj._2 + "\n")
+        case LessThanOneMonth => ("<1: " + obj._2)
+        case OneToThreeMonths => ("1-3: " + obj._2)
+        case FourToSixMonths => ("4-6: " + obj._2)
+        case SevenToTwelveMonths => ("7-12: " + obj._2)
+        case MoreThanTwelveMonths => (">12: " + obj._2)
       }
     }
-    )
-
-    str
+    ).mkString("\n")
   }
 
 
@@ -79,6 +77,7 @@ class showIntervals(private val dateIniArg: String) {
     }) intervals.add(m.group.toInt)
 
     val dateIni = dateIniArg.split(" ")(0)
+
 
 
     var str: String = new String()
