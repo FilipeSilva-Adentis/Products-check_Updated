@@ -1,4 +1,4 @@
-
+import scala.collection.mutable.ArrayBuffer
 
 class showOrdersInterval(private val dateIni: String, private val dateEnd: String) {
 
@@ -9,8 +9,10 @@ class showOrdersInterval(private val dateIni: String, private val dateEnd: Strin
     val dateI = format.parse(dateIni)
     val dateE = format.parse(dateEnd)
 
-    listOrders.filter(order => {
-      (order.getDate().compareTo(dateI) >= 0 && order.getDate().compareTo(dateE) <= 0)
+    val listOrdersFiltered = listOrders.filter(order => {
+      order.getDate().compareTo(dateI) >= 0 && order.getDate().compareTo(dateE) <= 0
     })
+
+    listOrdersFiltered
   }
 }

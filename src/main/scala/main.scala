@@ -12,14 +12,14 @@ object main {
       intervalList match {
         case None =>
           println(
-            new showIntervals(dateIni, dateEnd).getIntervals(
+            new showIntervals(dateIni).getIntervals(
               new showOrdersInterval(dateIni, dateEnd)
                 .getOrders(new doOrders().makeOrders())
             )
           )
         case Some(intervalList) =>
           println(
-            new showIntervals(dateIni, dateEnd)
+            new showIntervals(dateIni)
               .getOrdersBySpecInterval(
                 new doOrders().makeOrders(),
                 intervalList
@@ -30,7 +30,7 @@ object main {
 
     result match {
       case Failure(exception) => println(s"Error: ${exception.getMessage}")
-      case Success(value) => println(value)
+      case Success(value) => if (value.toString != "()") println(s"Value: ${value}")
     }
   }
 }

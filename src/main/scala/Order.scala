@@ -6,7 +6,6 @@ class Order(private val customerName: String,
             private val date: String,
             private val items: List[Item]) {
 
-  //Items/Order dates validation
   val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
   format.format(new java.util.Date())
   val dateOrder = format.parse(date)
@@ -26,6 +25,8 @@ class Order(private val customerName: String,
 
     format.parse(date)
   }
+
+  def getName(): String = customerName
 
   def getItemsList(): List[Item] = {
     items
