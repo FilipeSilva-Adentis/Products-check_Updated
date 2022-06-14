@@ -1,18 +1,15 @@
-import scala.collection.mutable.ArrayBuffer
+import java.time.YearMonth
 
-class showOrdersInterval(private val dateIni: String, private val dateEnd: String) {
+object ShowOrdersInterval {
 
-  def getOrders(listOrders: Seq[Order]): Seq[Order] = {
+  def getOrders(initialDate: YearMonth, endDate: YearMonth, listOrders: Seq[Order]): Seq[Order] = listOrders.filter {
+    order: Order =>
+      val auxIni: Boolean = ((order.date.getYear.intValue * 12 + order.date.getMonth.getValue) - (initialDate.getYear.intValue() * 12 + initialDate.getMonth.getValue)) >= 0
+      val auxEnd: Boolean = ((order.date.getYear.intValue * 12 + order.date.getMonth.getValue) - (endDate.getYear.intValue() * 12 + endDate.getMonth.getValue)) <= 0
 
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    format.format(new java.util.Date())
-    val dateI = format.parse(dateIni)
-    val dateE = format.parse(dateEnd)
-
-    val listOrdersFiltered = listOrders.filter(order => {
-      order.getDate().compareTo(dateI) >= 0 && order.getDate().compareTo(dateE) <= 0
-    })
-
-    listOrdersFiltered
+      if (auxIni && auxEnd)
+        true
+      else
+        false
   }
 }

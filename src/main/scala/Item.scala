@@ -1,29 +1,26 @@
-import java.util.Date
+import java.time.YearMonth
 
-class Item(
-            private val shippingFee: Float,
-            private val taxAmount: Float,
-            private val product: Product) {
+case class Item(
+                 shippingFee: Float,
+                 taxAmount: Float,
+                 product: Product
+               ) {
+  require(
+    shippingFee >= 0f || taxAmount >= 0f,
+    s"""
+       |Error with product with item 
+       |${product.name}
+       |The value of ${
+      if (shippingFee < 0f) s"Shipping fee: $shippingFee"
+      else s"Tax amount: $taxAmount"
+    } must be equal or greater than 0
+       |
+       |""".stripMargin
+  )
 
-  private val cost: Float = BigDecimal(product.getPrice() + (product.getPrice() * (taxAmount / 100)) + shippingFee).setScale(2, BigDecimal.RoundingMode.HALF_UP).toFloat
+  val date: YearMonth = product.creationDate
 
-  if(shippingFee < 0 || taxAmount < 0 ){
-    throw new ArithmeticException("\n\nError with product with item \""+ product.getName() + "\"\nThe value of " + (if(shippingFee < 0) "Shipping fee: '" + shippingFee else "Tax amount: '" + taxAmount) + "' must be equal or greater than 0")
-  }
-  def getCost(): Float = {
-    cost
-  }
-
-  def getDate(): Date = {
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    format.format(new java.util.Date())
-
-    format.parse(product.getDate())
-  }
-
-  def getProduct(): Product = {
-    product
-  }
-
-  override def toString: String = "\n\n\nItem:\n" + "Cost: " + cost + "\nShipping fee: " + shippingFee + "\nTax amount: " + taxAmount + "\n" + product
+  def cost: Float = BigDecimal(
+    product.price + (product.price * (taxAmount / 100)) + shippingFee
+  ).setScale(2, BigDecimal.RoundingMode.HALF_UP).toFloat
 }
